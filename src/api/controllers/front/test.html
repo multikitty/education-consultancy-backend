@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Hi, Troy Martin. Welcome to QETC! </title>
+    <style>
+        .email-body {
+            background: #1f2528;
+            padding: 70px 40px;
+        }
+
+        .email-title {
+            font-style: normal;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 100%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #E6E6E6;
+        }
+
+        .email-receiver {
+            margin-top: 70px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 119.5%;
+            color: #5CB5A5;
+        }
+
+        .email-content {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 119.5%;
+            text-align: justify;
+            color: #FFFFFF;
+        }
+
+        .email-verify-code {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-top: 60px ;
+        }
+
+        .email-verify-code label {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 119.5%;
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-right: 20px;
+        }
+
+        .email-verify-code div {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 123%;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            text-transform: uppercase;
+            color: #5CB5A5;
+            background: #FFFFFF;
+            padding: 5px 30px;
+            border-radius: 10px;
+        }
+
+        .email-regard {
+            margin-top: 120px;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 119.5%;
+            text-align: justify;
+            color: #FFFFFF;
+        }
+
+        .email-sender {
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+
+<body class="email-body">
+    <h2 class="email-title">Hi, {{ name }}. Welcome to QETC!</h2>
+    <p class="email-receiver">Dear Customer</p>
+    <div class="email-content">Here is your code to confirm your e-mail l for become a part ot the Community of
+        Mathematicaians.</div>
+    <div class="email-verify-code">
+        <label>CODE:</label>
+        <div>{{usercode}}</div>
+    </div>
+    <p class="email-regard">Best Regards</p>
+    <h3 class="email-sender">GROTHENDIECK</h3>
+</body>
+
+</html>

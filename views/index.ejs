@@ -1,0 +1,204 @@
+<!-- <head>
+    <link rel="stylesheet" type="text/css" href="../admin/static/css/style.css"/>
+</head>
+<h1>This is home page</h1>
+
+<h1> Sign up form </h1>
+ 
+<form class ="form-create" action="create-private-admin" method="POST">
+    <input class ="form-control" type="text" name="name"
+        placeholder="John Doe">
+    <input class ="form-control" type="email" name="email"
+        placeholder="johndoe@abc.com">
+    <input class ="form-control" type="text" name="phone"
+        placeholder="03331234567">
+    <input class ="form-control" type="password" name="password"
+    >
+    <button>Submit</button>
+</form>
+ -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container" >
+        <h3>Register</h3>
+        
+                <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span id="nameErrorSpan"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+                <div id="alertMessagesDiv" role="alert">
+                    <span id="alertMessages"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        
+
+        <form id="createPrivateAdminForm">
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="name" class="form-label">Name<span>*</span></label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="John Smith">
+            </div>
+            
+            <div class ="form-goup col-md-6"></div>
+            
+            <div class="form-group col-md-6">
+                <label for="email" class="form-label">Email address<span>*</span></label>
+                <input type="email" class="form-control" name="email" id="email" placeholder = "johnsmith@abc.com">
+            </div>
+            <div class ="form-goup col-md-6"></div>
+
+            <div class="form-group col-md-6">
+                <label for="password" class="form-label">Password<span>*</span></label>
+                <input type="password" class="form-control" name="password" id="password">
+            </div>
+            <div class ="form-goup col-md-6"></div>
+
+            <div class="form-group col-md-6">
+                <label for="confirmpassword" class="form-label">Confirm Password<span>*</span></label>
+                <input type="password" class="form-control" name="confirmpassword" id="confirmpassword">
+            </div>
+            <div class ="form-goup col-md-6"></div>
+
+            <div class="form-group col-md-6">
+                <label for="privatekey" class="form-label">Private Key<span>*</span></label>
+                <input type="password" class="form-control" name="privatekey" id="privatekey">
+            </div>
+            <div class ="form-goup col-md-6"></div>
+
+            <div class="form-group form-check col-md-6 ">
+                <label for="status" class="form-label col-md-2" value ="1">Status<span>*</span></label>
+                <label class="form-check-label col-md-2"><input class ="form-check-input" type="radio" name="status" value="1">Active</label>
+                <label class="form-check-label col-md-2"><input class ="form-check-input" type="radio" name="status" value="0">Inactive</label>
+            </div>
+            <div class ="form-goup col-md-6"></div>
+
+            <button type="button" onclick="return redirect(form)" class="btn btn-primary mb-2">Submit</button>
+        </div>
+        </form>
+
+    </div>
+    <script> 
+        function redirect(form) {
+            let name= form.name.value
+            let email= form.email.value 
+            let password= form.password.value
+            let confirmpassword= form.confirmpassword.value
+            let privatekey = form.privatekey.value
+            let status = form.status.value
+            let isValid = validateForm(name, email, password, confirmpassword, status)
+            
+          if(isValid){
+                document.getElementById("createPrivateAdminForm").reset();
+                 axios.post('http://localhost:8081/v1/admin/staff/private-admin/create-private-admin', {
+                    name,
+                    email: email, 
+                    password,
+                    confirmpassword,
+                    privatekey,
+                    status
+                }
+                // {
+                //     headers: {
+                //         'Authorization': process.env.AUTHORIZATION,
+                //         'x-auth-token' : process.env.XAUTHTOKEN,
+                //         'content-type': 'application/json'
+                //     }
+                // }
+                ).then((res) =>{
+                    console.log("Response :", res)
+                    let alertMessagesDiv = document.getElementById('alertMessagesDiv')
+                    let spanElem = document.getElementById('alertMessages')
+                    spanElem.innerHTML = res.data.message
+                    alertMessagesDiv.setAttribute("class", "alert alert-success alert-dismissible fade show")
+                })
+                .catch((err)=>{
+                    let alertMessagesDiv = document.getElementById('alertMessagesDiv')
+                    let spanElem = document.getElementById('alertMessages')
+                    spanElem.innerHTML = err.response.data.message ? err.response.data.message : err.message
+                    alertMessagesDiv.setAttribute("class", "alert alert-danger alert-dismissible fade show")
+                })
+                }  
+            else {
+                console.log('Form not submitted')
+            }
+          }
+        
+        function validateForm(name, email, password, confirmpassword, status, privatekey) {
+            let alertMessagesDiv = document.getElementById('alertMessagesDiv')
+            let spanElem = document.getElementById('alertMessages')
+
+            let errorMsgs = []
+            let isValid = true
+            let regex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/;
+            if(name === ''){
+                errorMsgs.push("Name is required.")
+                isValid = false
+            }
+            else if(name.length < 3){
+                errorMsgs.push("Name should be atleast 3 characters long")
+                isValid = false
+            }
+
+            if(email === ''){
+                errorMsgs.push("Email is required.")
+                isValid=false
+            }
+            else if(!email.match(regex)){
+                console.log("Invalid email")
+                isValid = false
+            }
+
+            if(password === ''){
+                errorMsgs.push("Password is required.")                
+                isValid = false
+            }
+            else if(password.length < 8){
+                errorMsgs.push("Password should be atleast 8 characters long")
+                isValid = false
+            }
+
+            if(confirmpassword === ''){
+                errorMsgs.push("Confirm Password is required.")
+                isValid = false
+            }
+            else if(confirmpassword !== password){
+                errorMsgs.push("Passwords do not match")
+                isValid = false
+            }
+
+            if(privatekey === ''){
+                errorMsgs.push("Private Key is required.")
+                isValid = false
+            }
+
+            if(status === ''){
+                errorMsgs.push("Status is required.")
+                isValid = false
+            }
+
+            errorMsgs.forEach((e) =>{
+                spanElem.innerHTML += `${e}<br/>`
+                alertMessagesDiv.setAttribute("class", "alert alert-warning alert-dismissible fade show")
+
+            })
+            
+            return isValid
+        } 
+      
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"> </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+</body>
+</html>
